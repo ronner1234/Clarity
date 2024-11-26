@@ -6,31 +6,30 @@ import json
 import os
 from pathlib import Path
 import requests
-#import moviepy
+
+# import moviepy
 with open("api.key", "r") as f:
     keys = json.load(f)
 
 # Access individual keys
 ELEVEN = keys.get("eleven")
-AZURE = keys.get("openAI")
-openAI_private = keys.get("openAI_private")
-OPENAI_KEY = AZURE # Open AI key here
-
-api_base = "https://hackatum-2024.openai.azure.com/" # update Azure env
-api_key = OPENAI_KEY
+OPENAI_KEY = keys.get("openAI")
+API_BASE = "https://hackatum-2024.openai.azure.com/"  # update Azure env
 
 
 class ComponentParagraph(BaseModel):
     subheader: str
     text: str
 
+
 class GeneratedText(BaseModel):
     title: str
     content: List[ComponentParagraph]
 
+
 def generate_text(source=FinalTopic):
     client = openai.AzureOpenAI(
-        api_key=api_key, api_version="2024-08-01-preview", azure_endpoint=api_base
+        api_key=OPENAI_KEY, api_version="2024-08-01-preview", azure_endpoint=API_BASE
     )
 
     response = client.beta.chat.completions.parse(
@@ -101,12 +100,14 @@ def generate_text(source=FinalTopic):
     )
     return response.choices[0].message.parsed
 
+
 class Tweet(BaseModel):
     tweet: str
 
+
 def generate_tweet(source: GeneratedText):
     client = openai.AzureOpenAI(
-        api_key=api_key, api_version="2024-08-01-preview", azure_endpoint=api_base
+        api_key=OPENAI_KEY, api_version="2024-08-01-preview", azure_endpoint=API_BASE
     )
 
     response = client.beta.chat.completions.parse(
@@ -126,21 +127,25 @@ def generate_tweet(source: GeneratedText):
 
     return response.choices[0].message.parsed
 
+
 class Podcast_Text(BaseModel):
     podcast_text: str
     title: str
+
 
 class Podcast(BaseModel):
     mp3_link: str
     title: str
 
+
 import requests
 import uuid
+
 
 def generate_podcast(source: GeneratedText):
     print("Generating podcast")
     client = openai.AzureOpenAI(
-        api_key=api_key, api_version="2024-08-01-preview", azure_endpoint=api_base
+        api_key=OPENAI_KEY, api_version="2024-08-01-preview", azure_endpoint=API_BASE
     )
 
     response = client.beta.chat.completions.parse(
@@ -174,56 +179,60 @@ def generate_podcast(source: GeneratedText):
     headers = {
         "Accept": "audio/mpeg",
         "Content-Type": "application/json",
-        "xi-api-key": key
+        "xi-api-key": key,
     }
 
     data = {
         "text": text,
         "model_id": "eleven_monolingual_v1",
-        "voice_settings": {
-            "stability": 0.5,
-            "similarity_boost": 0.5
-        }
+        "voice_settings": {"stability": 0.5, "similarity_boost": 0.5},
     }
 
     response = requests.post(url, json=data, headers=headers)
     print(response)
-    with open('content/' + str(id) + '.mp3', 'wb') as f:
+    with open("content/" + str(id) + ".mp3", "wb") as f:
         for chunk in response.iter_content(chunk_size=CHUNK_SIZE):
             if chunk:
                 f.write(chunk)
-    return Podcast(mp3_link='http://localhost:8000/content/' + str(id) + '.mp3', title=title)
+    return Podcast(
+        mp3_link="http://localhost:8000/content/" + str(id) + ".mp3", title=title
+    )
 
 
 def generate_speech(text: GeneratedText, topic: str):
-    speech_file_path = os.path.join(os.path.dirname(__file__), "tts_folder", f"{topic.replace(" ","_")}.mp3")
-
-    client = openai.OpenAI(
-        api_key=openAI_private
+    speech_file_path = os.path.join(
+        os.path.dirname(__file__), "tts_folder", f"{topic.replace(" ","_")}.mp3"
     )
+
+    client = openai.AzureOpenAI(
+        api_key=OPENAI_KEY, api_version="2024-08-01-preview", azure_endpoint=API_BASE
+    )
+
     response = client.audio.speech.create(
         model="tts-1",
         voice="alloy",
-        input=text.title + str([(t.subheader, t. text) for t in text.content])
+        input=text.title + str([(t.subheader, t.text) for t in text.content]),
     )
 
     response.stream_to_file(speech_file_path)
 
-def generate_images(topic:FinalTopic):
-    client = openai.OpenAI(
-        api_key=openAI_private
+
+def generate_images(topic: FinalTopic):
+    client = openai.AzureOpenAI(
+        api_key=OPENAI_KEY, api_version="2024-08-01-preview", azure_endpoint=API_BASE
     )
+
     response = client.audio.speech.create(
         model="tts-1",
         voice="alloy",
-        input=topic.title + str([(t.subheader, t. text) for t in text.content])
+        input=topic.title + str([(t.subheader, t.text) for t in text.content]),
     )
     try:
         response = client.images.generate(
             model="dall-e-3",
             prompt=f"create image for the topic {topic.name} with the short description {topic.description}. Do not add text to the image.",
             n=1,
-            size="1024x1024"
+            size="1024x1024",
         )
         image_url = response.data[0].url
         print(image_url)
@@ -235,7 +244,7 @@ def generate_images(topic:FinalTopic):
 
 def generate_short_script(text: GeneratedText, expected_length="35 seconds"):
     client = openai.AzureOpenAI(
-        api_key=api_key, api_version="2024-08-01-preview", azure_endpoint=api_base
+        api_key=OPENAI_KEY, api_version="2024-08-01-preview", azure_endpoint=API_BASE
     )
 
     response = client.beta.chat.completions.parse(
@@ -259,20 +268,19 @@ def generate_short_script(text: GeneratedText, expected_length="35 seconds"):
     print(response.choices[0].message)
     return response.choices[0].message
 
+
 def generate_speech_short(script: str, file_name="short.mp3"):
     speech_file_path = os.path.join(os.path.dirname(__file__), "tts_folder", file_name)
 
-    client = openai.OpenAI(
-        api_key=openAI_private
+    client = openai.AzureOpenAI(
+        api_key=OPENAI_KEY, api_version="2024-08-01-preview", azure_endpoint=API_BASE
     )
-    response = client.audio.speech.create(
-        model="tts-1",
-        voice="alloy",
-        input=script
-    )
+
+    response = client.audio.speech.create(model="tts-1", voice="alloy", input=script)
 
     response.stream_to_file(speech_file_path)
     return speech_file_path
+
 
 def final_topics_cached() -> List[FinalTopic]:
     if os.path.exists("./json/final_topics.json"):
@@ -295,7 +303,7 @@ def merge_video_and_audio(video_path, audio_path, output_path):
     # Set the new audio to the video
     final_clip = video_clip.set_audio(audio_clip)
     # Write the final video file
-    final_clip.write_videofile(output_path, codec='libx264', audio_codec='aac')
+    final_clip.write_videofile(output_path, codec="libx264", audio_codec="aac")
 
 
 # final_topics = final_topics_cached()

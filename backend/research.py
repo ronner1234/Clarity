@@ -19,22 +19,19 @@ def topics_enhanced_cached() -> TopicListEnhancedArticle:
 
     return t
 
+
 with open("api.key", "r") as f:
     keys = json.load(f)
 
-# Access individual keys
-PERPLEXITY = keys.get("perplexity")
-AZURE = keys.get("openAI")
-openAI_private = keys.get("openAI_private")
-# Replace with your actual API key
-API_KEY = PERPLEXITY # perplexity AI key here
-api_key = AZURE # OpenAI Azure key here
-# Base URL for the Perplexity AI API
-BASE_URL = "https://api.perplexity.ai"
-api_base = "https://hackatum-2024.openai.azure.com/" # update depending on Azure environment
+PERPLEXITY_KEY = keys.get("perplexity")
+OPENAI_KEY = keys.get("openAI")
+PERPLEXITY_BASE_URL = "https://api.perplexity.ai"
+OPENAI_BASE_URL = (
+    "https://hackatum-2024.openai.azure.com/"  # update depending on Azure environment
+)
 
 # Endpoint for chat completions
-endpoint = f"{BASE_URL}/chat/completions"
+endpoint = f"{PERPLEXITY_BASE_URL}/chat/completions"
 
 
 def fact_check_perplexity(topics: TopicListEnhancedArticle):
@@ -49,7 +46,7 @@ def fact_check_perplexity(topics: TopicListEnhancedArticle):
 
         # Headers including the API key for authentication
         headers = {
-            "Authorization": f"Bearer {API_KEY}",
+            "Authorization": f"Bearer {PERPLEXITY_KEY}",
             "Content-Type": "application/json",
         }
 
@@ -78,9 +75,9 @@ def fact_check_perplexity(topics: TopicListEnhancedArticle):
             print("Response from Perplexity AI:")
             print(result)
             client = openai.AzureOpenAI(
-                api_key=api_key,
+                api_key=OPENAI_KEY,
                 api_version="2024-08-01-preview",
-                azure_endpoint=api_base,
+                azure_endpoint=OPENAI_BASE_URL,
             )
             citations = result["citations"]
             system_message = {
