@@ -61,6 +61,10 @@ Link to [DEVPOST](https://devpost.com/software/clarity-t8dvrp)!
    ```
    The application will be available at `http://localhost:5173`.
 
+## Using the App.
+
+Scraping and processing is performed on request. Use the endpoint `/refresh` to run a full processing. The app will use this output.
+
 ## Inspiration
 
 Journalism in the age of social media and digital news is challenging. Balancing speed, accuracy, and delivering original value to readers requires immense effort. Human oversight remains essential to ensure ethical standards and to verify the accuracy of facts and news. To support journalists in this mission, we built Clarity—a tool designed to empower them in navigating these complexities with confidence and efficiency.
