@@ -1,4 +1,9 @@
-# Clarity - The Copilot for Journalists
+
+
+
+<img src="images/clarity.png" alt="drawing" width="400"/>
+
+---
 
 This project was created during the HackaTUM 2024 by Simon, Theo and Ron.
 
