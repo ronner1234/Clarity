@@ -1,0 +1,718 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "RTS Hubert Burda Media",
+    "version": "0.1.0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:8000",
+      "description": "Dev"
+    }
+  ],
+  "paths": {
+    "/refresh": {
+      "get": {
+        "tags": [
+          "content"
+        ],
+        "summary": "Refresh Content",
+        "operationId": "refresh_content_refresh_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/get_content": {
+      "get": {
+        "tags": [
+          "content"
+        ],
+        "summary": "Get Content",
+        "operationId": "get_content_get_content_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/objectToSend"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/get_text": {
+      "post": {
+        "tags": [
+          "content"
+        ],
+        "summary": "Get Text",
+        "operationId": "get_text_get_text_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/FinalTopic-Input"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GeneratedText"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/get_tweet": {
+      "post": {
+        "tags": [
+          "content"
+        ],
+        "summary": "Get Tweet",
+        "operationId": "get_tweet_get_tweet_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GeneratedText"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Tweet"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/get_podcast": {
+      "post": {
+        "tags": [
+          "content"
+        ],
+        "summary": "Get Podcast",
+        "operationId": "get_podcast_get_podcast_post",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GeneratedText"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Podcast"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/stock/": {
+      "get": {
+        "tags": [
+          "content"
+        ],
+        "summary": "Get Stock",
+        "operationId": "get_stock_stock__get",
+        "parameters": [
+          {
+            "name": "categories",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "integer"
+              },
+              "title": "Categories"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/objectToSend"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/content": {
+      "get": {
+        "tags": [
+          "media"
+        ],
+        "summary": "Get Content",
+        "operationId": "get_content_content_get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        }
+      }
+    },
+    "/article_images": {
+      "get": {
+        "tags": [
+          "media"
+        ],
+        "summary": "Get Article Image By Topic",
+        "operationId": "get_article_image_by_topic_article_images_get",
+        "parameters": [
+          {
+            "name": "topic",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Topic"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/stock_images": {
+      "get": {
+        "tags": [
+          "media"
+        ],
+        "summary": "Get Article Image By Topic",
+        "operationId": "get_article_image_by_topic_stock_images_get",
+        "parameters": [
+          {
+            "name": "topic",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "title": "Topic"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          },
+          "422": {
+            "description": "Validation Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HTTPValidationError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/": {
+      "get": {
+        "summary": "Root",
+        "operationId": "root__get",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {}
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "AssessedFact": {
+        "properties": {
+          "key": {
+            "type": "string",
+            "title": "Key"
+          },
+          "description": {
+            "type": "string",
+            "title": "Description"
+          },
+          "article_ids": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Article Ids"
+          },
+          "perplexity_links": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Perplexity Links"
+          },
+          "perplexity_assessment": {
+            "type": "string",
+            "title": "Perplexity Assessment"
+          },
+          "correct_flag": {
+            "type": "boolean",
+            "title": "Correct Flag"
+          }
+        },
+        "type": "object",
+        "required": [
+          "key",
+          "description",
+          "article_ids",
+          "perplexity_links",
+          "perplexity_assessment",
+          "correct_flag"
+        ],
+        "title": "AssessedFact"
+      },
+      "ComponentParagraph": {
+        "properties": {
+          "subheader": {
+            "type": "string",
+            "title": "Subheader"
+          },
+          "text": {
+            "type": "string",
+            "title": "Text"
+          }
+        },
+        "type": "object",
+        "required": [
+          "subheader",
+          "text"
+        ],
+        "title": "ComponentParagraph"
+      },
+      "EnhancedArticle": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "published_at": {
+            "type": "string",
+            "title": "Published At"
+          },
+          "cover_image_url": {
+            "type": "string",
+            "title": "Cover Image Url"
+          },
+          "author": {
+            "type": "string",
+            "title": "Author"
+          },
+          "title": {
+            "type": "string",
+            "title": "Title"
+          },
+          "link": {
+            "type": "string",
+            "title": "Link"
+          },
+          "description": {
+            "type": "string",
+            "title": "Description"
+          },
+          "full_text": {
+            "type": "string",
+            "title": "Full Text"
+          },
+          "full_text_cleaned": {
+            "type": "string",
+            "title": "Full Text Cleaned",
+            "description": "Direct copy from the full_text but leave out irrelevants content not related to topic."
+          },
+          "facts": {
+            "items": {
+              "$ref": "#/components/schemas/Fact"
+            },
+            "type": "array",
+            "title": "Facts",
+            "description": "Extract facts stated in the article full_text by key and description"
+          }
+        },
+        "type": "object",
+        "required": [
+          "published_at",
+          "cover_image_url",
+          "author",
+          "title",
+          "link",
+          "description",
+          "full_text",
+          "full_text_cleaned",
+          "facts"
+        ],
+        "title": "EnhancedArticle"
+      },
+      "Fact": {
+        "properties": {
+          "key": {
+            "type": "string",
+            "title": "Key"
+          },
+          "description": {
+            "type": "string",
+            "title": "Description"
+          }
+        },
+        "type": "object",
+        "required": [
+          "key",
+          "description"
+        ],
+        "title": "Fact"
+      },
+      "FinalTopic-Input": {
+        "properties": {
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "description": {
+            "type": "string",
+            "title": "Description"
+          },
+          "categories": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Categories"
+          },
+          "fact_summary": {
+            "items": {
+              "$ref": "#/components/schemas/AssessedFact"
+            },
+            "type": "array",
+            "title": "Fact Summary"
+          },
+          "article_list": {
+            "items": {
+              "$ref": "#/components/schemas/EnhancedArticle"
+            },
+            "type": "array",
+            "title": "Article List"
+          }
+        },
+        "type": "object",
+        "required": [
+          "name",
+          "description",
+          "categories",
+          "fact_summary",
+          "article_list"
+        ],
+        "title": "FinalTopic"
+      },
+      "FinalTopic-Output": {
+        "properties": {
+          "name": {
+            "type": "string",
+            "title": "Name"
+          },
+          "description": {
+            "type": "string",
+            "title": "Description"
+          },
+          "categories": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array",
+            "title": "Categories"
+          },
+          "fact_summary": {
+            "items": {
+              "$ref": "#/components/schemas/AssessedFact"
+            },
+            "type": "array",
+            "title": "Fact Summary"
+          },
+          "article_list": {
+            "items": {
+              "$ref": "#/components/schemas/EnhancedArticle"
+            },
+            "type": "array",
+            "title": "Article List"
+          }
+        },
+        "type": "object",
+        "required": [
+          "name",
+          "description",
+          "categories",
+          "fact_summary",
+          "article_list"
+        ],
+        "title": "FinalTopic"
+      },
+      "GeneratedText": {
+        "properties": {
+          "title": {
+            "type": "string",
+            "title": "Title"
+          },
+          "content": {
+            "items": {
+              "$ref": "#/components/schemas/ComponentParagraph"
+            },
+            "type": "array",
+            "title": "Content"
+          }
+        },
+        "type": "object",
+        "required": [
+          "title",
+          "content"
+        ],
+        "title": "GeneratedText"
+      },
+      "HTTPValidationError": {
+        "properties": {
+          "detail": {
+            "items": {
+              "$ref": "#/components/schemas/ValidationError"
+            },
+            "type": "array",
+            "title": "Detail"
+          }
+        },
+        "type": "object",
+        "title": "HTTPValidationError"
+      },
+      "Image": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id"
+          },
+          "article_id": {
+            "type": "string",
+            "title": "Article Id"
+          },
+          "url": {
+            "type": "string",
+            "title": "Url"
+          },
+          "backend_url": {
+            "type": "string",
+            "title": "Backend Url"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "article_id",
+          "url",
+          "backend_url"
+        ],
+        "title": "Image"
+      },
+      "Podcast": {
+        "properties": {
+          "mp3_link": {
+            "type": "string",
+            "title": "Mp3 Link"
+          },
+          "title": {
+            "type": "string",
+            "title": "Title"
+          }
+        },
+        "type": "object",
+        "required": [
+          "mp3_link",
+          "title"
+        ],
+        "title": "Podcast"
+      },
+      "Tweet": {
+        "properties": {
+          "tweet": {
+            "type": "string",
+            "title": "Tweet"
+          }
+        },
+        "type": "object",
+        "required": [
+          "tweet"
+        ],
+        "title": "Tweet"
+      },
+      "ValidationError": {
+        "properties": {
+          "loc": {
+            "items": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "integer"
+                }
+              ]
+            },
+            "type": "array",
+            "title": "Location"
+          },
+          "msg": {
+            "type": "string",
+            "title": "Message"
+          },
+          "type": {
+            "type": "string",
+            "title": "Error Type"
+          }
+        },
+        "type": "object",
+        "required": [
+          "loc",
+          "msg",
+          "type"
+        ],
+        "title": "ValidationError"
+      },
+      "objectToSend": {
+        "properties": {
+          "final_topics": {
+            "items": {
+              "$ref": "#/components/schemas/FinalTopic-Output"
+            },
+            "type": "array",
+            "title": "Final Topics"
+          },
+          "images": {
+            "items": {
+              "$ref": "#/components/schemas/Image"
+            },
+            "type": "array",
+            "title": "Images"
+          }
+        },
+        "type": "object",
+        "required": [
+          "final_topics",
+          "images"
+        ],
+        "title": "objectToSend"
+      }
+    }
+  }
+}

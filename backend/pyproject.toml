@@ -1,0 +1,20 @@
+[project]
+name = "uv-fastapi-example"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "beautifulsoup4>=4.12.3",
+    "bs4>=0.0.2",
+    "fastapi[standard]>=0.115.5",
+    "feedparser>=6.0.11",
+    "motor>=3.6.0",
+    "openai>=1.55.0",
+    "pydantic>=2.10.0",
+    "pymongo>=4.9.2",
+    "pytz>=2024.2",
+    "requests>=2.32.3",
+    "schedule>=1.2.2",
+    "uuid>=1.30",
+]
